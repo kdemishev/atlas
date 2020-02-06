@@ -1,5 +1,11 @@
 <html>
     
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  
+
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-app.js"></script>
  <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
@@ -30,15 +36,61 @@
   var defaultProject = firebase.initializeApp(firebaseConfig);
 
   console.log(defaultProject.name);
-
-  defaultProject.database().ref('users/' + 1).set({
-            username: "name2",
-            email: "email"
+/*
+  defaultProject.database().ref('Locations/SF').set({
+            name: "San Francisco",
+            lat: 37.7576793,
+            long: -122.50764
         });
+     */ 
+      var locations = [];
+     function loadLocations(){
+      firebase.database().ref('/Locations').once('value').then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          locations[childSnapshot.key] = { name : childSnapshot.val().name, 
+                                                lat: childSnapshot.val().lat, 
+                                                long:childSnapshot.val().long};  
+        });
+        console.log(locations);
+      });  
+     }
+
+     function getLocation(code){
+        if (code == null)
+          return "";
+        return locations[code].name; 
+      }
+      loadLocations();
+
+  $(document).ready(function(){
+  var ref = firebase.database().ref("users");
+
+  ref.on("value", function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      var childData = childSnapshot.val();
+      var id=childData.id;
+    
+      var dataRow = "<tr><td>"+ getLocation(childData.location)+"</td><td>"+ childData.username+"</td><td>"+childData.email +"</td></tr>";
+
+      $("#userTableBody").append(dataRow);
+  });
+});
+});
+
 
 </script>
 
     <body>
-<p>Hello world</p>
+      <table id="users" class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+        </tbody>
+      </table>
     </body>
 </html>
