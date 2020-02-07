@@ -1,5 +1,8 @@
 <html>
-    
+  
+  <script src="./main.js"></script>
+  <script src="./LocationManager.js"></script>
+
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -22,52 +25,22 @@
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 <script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyBEKEyNWLv3pLws63kNzS4UIVSeEs7MDsU",
-    authDomain: "mercury-149914.firebaseapp.com",
-    databaseURL: "https://mercury-149914.firebaseio.com",
-    projectId: "mercury-149914",
-    storageBucket: "mercury-149914.appspot.com",
-    messagingSenderId: "239421011553",
-    appId: "1:239421011553:web:0661f8ef4d8731bb49dc20"
-  };
-  // Initialize Firebase
-  var defaultProject = firebase.initializeApp(firebaseConfig);
+initFirebase();
+locationManager = new LocationManager();
 
-  console.log(defaultProject.name);
-     var locations = [];
-     function loadLocations(){
-      firebase.database().ref('/Locations').once('value').then(function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-          locations[childSnapshot.key] = { name : childSnapshot.val().name, 
-                                                lat: childSnapshot.val().lat, 
-                                                long:childSnapshot.val().long};  
-        });
-        console.log(locations);
-      });  
-     }
-
-     function getLocation(code){
-        if (code == null)
-          return "";
-        return locations[code].name; 
-      }
-      loadLocations();
-
-  $(document).ready(function(){
+$(document).ready(function(){
   var ref = firebase.database().ref("users");
 
   ref.on("value", function(snapshot) {
     snapshot.forEach(function(childSnapshot) {
       var childData = childSnapshot.val();
       var id=childData.id;
-    
-      var dataRow = "<tr><td>"+ getLocation(childData.location)+"</td><td>"+ childData.username+"</td><td>"+childData.email +"</td></tr>";
+  
+      var dataRow = "<tr><td>"+ locationManager.getLocation(childData.location)+"</td><td>"+ childData.username+"</td><td>"+childData.email +"</td></tr>";
 
       $("#userTableBody").append(dataRow);
+    });
   });
-});
 });
 
 

@@ -1,0 +1,73 @@
+<html>
+    <style>
+    body{
+        background-color: #E5E5E5;
+    }
+    
+    .close-dialog{
+        width: 32px;
+        height: 32px;
+
+        background-color: #A60311;
+        box-shadow: 0px 6px 10px rgba(166, 3, 17, 0.3);
+        border-radius: 22px;
+
+        cursor: pointer;
+        float:right;
+
+        text-align: center;
+        line-height: 32px;
+        text-transform: uppercase;
+        color: #FFFFFF;
+        font-style: normal;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .dialog{
+        background-color: #A60311;  
+        background: #FDFDFD;
+        border-radius: 20px;
+        padding: 10px;
+
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .title{
+        float: left;
+        color: #444444;
+    }
+
+    .title-line{
+        background-color: #A60311;
+        width: 32px;
+        height: 2px;
+        float: left; 
+        margin-top:12px;  
+    }
+
+    .title-text{
+        float: left; 
+        padding-left: 10px;
+        margin-top: 5px;
+    }
+
+    .body{
+        clear:both;
+    }
+
+    </style>
+    <body>
+        <div class="dialog">
+            <div class="title">
+                <div class="title-line">&nbsp;</div>
+                <div class="title-text">Оформить заказ</div>
+            </div>
+            <div class="close-dialog">
+             X
+            </div>
+            <div class="body">
+                <p>Here is the body of dialog</p>
+            </div>
+        </div>
+    </body>
+</html>
